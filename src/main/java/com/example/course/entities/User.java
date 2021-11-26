@@ -1,16 +1,24 @@
 package com.example.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Table(name = "tb_user")
 public class User implements Serializable {
-	private static final long serialVersionUID = 1L;
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -18,9 +26,13 @@ public class User implements Serializable {
 	private String email;
 	private String phone;
 	private String password;
-	
-	public  User() {
-		
+
+	@OneToMany(mappedBy = "client")
+	@JsonIgnore
+	private List<Order> orders = new ArrayList<Order>();
+
+	public User() {
+
 	}
 
 	public User(Long id, String name, String email, String phone, String password) {
@@ -77,6 +89,14 @@ public class User implements Serializable {
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	@Override
